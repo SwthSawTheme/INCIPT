@@ -1,5 +1,5 @@
 
-class Victim(object)?
+class Victim(object):
     
     def __init__(self,age:int, name:str, occupation:str, college:str, trauma_history:str, friends:list):
         self.age = age
