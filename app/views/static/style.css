@@ -1,4 +1,4 @@
-/* Estilos para simular uma tela de computador */
+/* Simulação da tela do terminal do hacker */
 body {
     background-color: black;
     margin: 0;
@@ -67,7 +67,8 @@ body {
     color: #00ff7f;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
+    overflow-y: auto;
 }
 
 #terminal {
@@ -86,37 +87,32 @@ body {
 
 .terminal-body {
     flex-grow: 1;
-    margin-top: 20px;
+    overflow-y: auto;
 }
 
-.terminal-body p {
+#output {
     white-space: pre-wrap;
     word-wrap: break-word;
     line-height: 1.5;
     font-size: 1.1em;
 }
 
-.terminal-footer {
+.input-line {
     display: flex;
-    justify-content: space-around;
-    padding-top: 10px;
+    align-items: center;
 }
 
-button {
-    background-color: #00ff7f;
-    color: black;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 8px;
+#prompt {
     font-weight: bold;
-    transition: background-color 0.3s ease;
+    margin-right: 10px;
 }
 
-button:hover {
-    background-color: #005700;
-}
-
-button:focus {
+#command-input {
+    flex-grow: 1;
+    background-color: black;
+    color: #00ff7f;
+    border: none;
+    font-size: 1.2em;
     outline: none;
+    caret-color: #00ff7f;
 }

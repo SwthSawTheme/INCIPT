@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker - Terminal</title>
+    <title>Hacker - Terminal Interativo</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -17,17 +17,14 @@
             <div class="monitor-content">
                 <div id="terminal">
                     <div class="terminal-header">
-                        <p>root@hacker:~$ Bem-vindo ao Sistema</p>
+                        <p id="path">root@hacker:~/</p> <!-- Caminho atual -->
                     </div>
                     <div class="terminal-body">
-                        <p id="result">Clique nas ações abaixo para iniciar...</p>
-                    </div>
-                    <div class="terminal-footer">
-                        <button onclick="hackDevice()">Hackear Dispositivo</button>
-                        <button onclick="extractPhotos()">Extrair Fotos</button>
-                        <button onclick="monitorActivity()">Monitorar Atividades</button>
-                        <button onclick="increaseObsession()">Aumentar Obsessão</button>
-                        <button onclick="improveHacking()">Melhorar Habilidade de Hacking</button>
+                        <div id="output">Digite um comando para começar...</div>
+                        <div class="input-line">
+                            <span id="prompt">root@hacker:~/</span> <!-- Prompt do terminal -->
+                            <input type="text" id="command-input" autofocus onkeydown="handleCommand(event)">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -35,44 +32,42 @@
     </div>
 
     <script>
-        function hackDevice() {
-            fetch('/player/hack', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('result').textContent = data.hack_result ? "Hack bem-sucedido!" : "Falha no hack.";
-                });
+        let currentPath = '~/'; // Caminho atual do terminal
+
+        // Função para tratar os comandos inseridos pelo usuário
+        function handleCommand(event) {
+            if (event.key === 'Enter') {
+                const input = document.getElementById('command-input');
+                const command = input.value.trim();
+                
+                // Envia o comando para o backend
+                executeCommand(command);
+                input.value = ''; // Limpa o campo de input
+            }
         }
 
-        function extractPhotos() {
-            fetch('/player/extract_photos', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('result').textContent = "Fotos extraídas!";
-                });
+        // Função para enviar o comando ao backend e processar o resultado
+        function executeCommand(command) {
+            fetch('/terminal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ command: command, path: currentPath })
+            })
+            .then(response => response.json())
+            .then(data => {
+                updateTerminal(data.output);
+                if (data.path) {
+                    currentPath = data.path; // Atualiza o caminho
+                    document.getElementById('prompt').textContent = `root@hacker:${currentPath} `;
+                }
+            });
         }
 
-        function monitorActivity() {
-            fetch('/player/monitor_activity', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('result').textContent = "Atividade monitorada!";
-                });
-        }
-
-        function increaseObsession() {
-            fetch('/player/increase_obsession', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('result').textContent = "Nível de obsessão aumentado!";
-                });
-        }
-
-        function improveHacking() {
-            fetch('/player/improve_hacking', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('result').textContent = "Habilidade de hacking melhorada!";
-                });
+        // Atualiza o terminal com o novo output
+        function updateTerminal(output) {
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML += `<p>${output}</p>`;
+            outputDiv.scrollTop = outputDiv.scrollHeight; // Rola para o fim do output
         }
     </script>
 </body>
