@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incipit - Painel Principal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Bem-vindo ao Painel de Controle</h1>
+    </header>
+
+    <section id="controls">
+        <h2>Ações do Jogador</h2>
+        <button onclick="hackDevice()">Hackear Dispositivo</button>
+        <button onclick="extractPhotos()">Extrair Fotos</button>
+        <button onclick="monitorActivity()">Monitorar Atividade</button>
+        <button onclick="increaseObsession()">Aumentar Obsessão</button>
+        <button onclick="improveHacking()">Melhorar Habilidade de Hacking</button>
+    </section>
+
+    <section id="output">
+        <h2>Resultado</h2>
+        <pre id="result">Os resultados aparecerão aqui...</pre>
+    </section>
+
+    <script>
+        // Função para chamar a rota de hack do dispositivo
+        function hackDevice() {
+            fetch('/player/hack', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                });
+        }
+
+        // Função para chamar a rota de extrair fotos
+        function extractPhotos() {
+            fetch('/player/extract_photos', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                });
+        }
+
+        // Função para monitorar atividade
+        function monitorActivity() {
+            fetch('/player/monitor_activity', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                });
+        }
+
+        // Função para aumentar obsessão
+        function increaseObsession() {
+            fetch('/player/increase_obsession', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                });
+        }
+
+        // Função para melhorar a habilidade de hacking
+        function improveHacking() {
+            fetch('/player/improve_hacking', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+                });
+        }
+    </script>
+</body>
+</html>
